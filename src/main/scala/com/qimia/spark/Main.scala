@@ -41,7 +41,7 @@ object Main {
         start = start + 1
       }
 
-      matches
+      matches.sortWith(_.weight > _.weight)
 
 
 
@@ -50,7 +50,6 @@ object Main {
   }
 
   def main(args:Array[String]) = {
-
 
     println("Choose the file \n 1-wiktionary.txt \n 2-cities.txt ")
     val fileInput = readLine()
@@ -68,7 +67,7 @@ object Main {
 
       val lineArr = line.trim.split("\\s")
       val weight = lineArr(0).toLong
-      val term = lineArr(1)
+      val term = lineArr(1).toLowerCase()
 
       terms ::= Term(term,weight)
 
@@ -82,8 +81,8 @@ object Main {
 
       val autoComplete :AutoComplete = AutoComplete(sortedTerms)
 
-      println(autoComplete.numberOfMatches(key))
-      println(autoComplete.allMatches(key))
+      println(s"********** ${autoComplete.numberOfMatches(key.toLowerCase)} matches **********")
+      autoComplete.allMatches(key.toLowerCase).foreach(term => println(s"Term: ${term.query} Weight: ${term.weight}"))
     }
 
   }
