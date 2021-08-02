@@ -1,9 +1,18 @@
 package com.qimia.spark
 
-import com.qimia.spark.Main.Term
-object Utilities {
-  def firstIndexOf(terms:List[Term],key:Term,len:Int):Int = {
+case class Term(query:String,weight:Long) extends Ordered[Term]{
+  if("".equals(query) || weight < 0)
+      throw new IllegalArgumentException("query must not be null or weight must not be negatif")
 
+  override def toString = s"Term: $query ---- Weight: $weight"
+
+  def compare(that:Term) = {
+    this.query.compare(that.query)
+  }
+}
+
+object Term {
+  def firstIndexOf(terms:Seq[Term],key:Term,len:Int):Int = {
     var result:Int= -1
     var high:Int = terms.length
 
@@ -35,7 +44,7 @@ object Utilities {
   }
 
 
-  def lastIndexOf(terms:List[Term],key:Term,len:Int):Int = {
+  def lastIndexOf(terms:Seq[Term],key:Term,len:Int):Int = {
 
     var result:Int= -1
     var high:Int = terms.length -1
@@ -70,29 +79,28 @@ object Utilities {
 
   def compare(o1:Term,o2:Term,prefix:Int) = {
 
-      var result = 0
+    var result = 0
 
-     import scala.util.control.Breaks._
-      breakable{
-        for{
-          i <- 0 to prefix
-          if i<prefix
-          if i < o1.query.length
-          if i < o2.query.length
+    import scala.util.control.Breaks._
+    breakable{
+      for{
+        i <- 0 to prefix
+        if i<prefix
+        if i < o1.query.length
+        if i < o2.query.length
 
-        }{
-          if(o1.query.charAt(i) < o2.query.charAt(i)) {
-            result = -1
-            break
-          } else if(o1.query.charAt(i) > o2.query.charAt(i)) {
-            result = 1
-            break
-          }
+      }{
+        if(o1.query.charAt(i) < o2.query.charAt(i)) {
+          result = -1
+          break
+        } else if(o1.query.charAt(i) > o2.query.charAt(i)) {
+          result = 1
+          break
         }
       }
+    }
 
-
-      result
+    result
 
 
   }
