@@ -20,15 +20,16 @@ object Main {
       case "2" => filePrefix + "/cities.txt"
     }
 
-    var terms = List[Term]()
 
-    for(line <- Source.fromFile(filename).getLines){
-      val lineArr = line.trim.split("\\s")
-      val weight = lineArr(0).toLong
-      val term = lineArr(1).toLowerCase()
-      terms ::= Term(term,weight)
+    val terms = Source.fromFile(filename).getLines
+      .map((line) => {
+        val columns = line.trim.split("\\s")
+        val weight = columns(0).toLong
+        val term = columns(1).toLowerCase()
+        Term(term,weight)
 
-    }
+      }).toList
+
 
     while(true){
 
