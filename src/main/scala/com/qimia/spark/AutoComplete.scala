@@ -16,21 +16,15 @@ case class AutoComplete(terms:Seq[Term]) {
 
   }
 
-  def allMatches(prefix:String):List[Term] = {
+  def allMatches(prefix:String):Seq[Term] = {
 
     val t:Term = Term(prefix,0)
-    var start: Int = Term.firstIndexOf(terms,t,prefix.length)
+    val start: Int = Term.firstIndexOf(terms,t,prefix.length)
     val size = numberOfMatches(prefix)
 
-    var matches = List[Term]()
+    val slicedTerms = terms.slice(start,start+size)
 
-    for( i <- 0 until size) {
-      matches ::=  terms(start)
-      start = start + 1
-    }
-
-    matches.sortWith(_.weight > _.weight)
-
+    slicedTerms.sortWith(_.weight > _.weight)
 
 
 

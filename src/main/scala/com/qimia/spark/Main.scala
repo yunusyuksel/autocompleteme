@@ -20,10 +20,9 @@ object Main {
       case "2" => filePrefix + "/cities.txt"
     }
 
-
     val terms = Source.fromFile(filename).getLines
       .map((line) => {
-        val columns = line.trim.split("\\s")
+        val columns = line.trim.split("\\s",2)
         val weight = columns(0).toLong
         val term = columns(1).toLowerCase()
         Term(term,weight)
@@ -36,8 +35,7 @@ object Main {
       print("Enter the key to search for: ")
       val key = readLine()
 
-      val sortedTerms = terms.sorted.toSeq
-
+      val sortedTerms = terms.sorted.toIndexedSeq
 
       val autoComplete :AutoComplete = AutoComplete(sortedTerms)
 

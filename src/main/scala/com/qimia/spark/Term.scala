@@ -9,6 +9,8 @@ case class Term(query:String,weight:Long) extends Ordered[Term]{
   def compare(that:Term) = {
     this.query.compare(that.query)
   }
+
+
 }
 
 object Term {
@@ -80,8 +82,10 @@ object Term {
   def compare(o1:Term,o2:Term,prefix:Int) = {
 
     var result = 0
+    /* o1.query.substring(0,prefix) compareTo o2.query.substring(0,prefix) */
 
     import scala.util.control.Breaks._
+
     breakable{
       for{
         i <- 0 to prefix
